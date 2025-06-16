@@ -1,0 +1,28 @@
+name: Daily Update Addons
+
+on:
+  schedule:
+    # every day at 2:37am UTC, saving server costs of mozilla as it is not a "round" time!
+    - cron: '37 2 * * *'
+
+jobs:
+  fetch-addons:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Run the script
+        run: nix run .#fetch-addons addons.yaml
+
+      - name: Commit and push
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions[bot]
+          author_email: github-actions[bot]@users.noreply.github.com
+          message: "update addons"
+          add: "addons.yaml"
