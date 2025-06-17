@@ -89,18 +89,22 @@ def main [
 
     def save-all-addons [--additional-params (-p): record = {}] {
         let first_page = get-addons-page
-        let last_job_set = $first_page.page_count // $job_count - 1
+        let job_set_count = $first_page.page_count // $job_count
         # loop over each job set
-        1..($last_job_set + 1)
+        0..($job_set_count)
             | each {|job_set|
                 # if we are in the special last job set, we will do the rest 
-                let $current_job_count = if ($job_set > $last_job_set) {$first_page.page_count mod $job_count} else {$job_count}
-                # spawn $job_count jobs
+                let $current_job_count = if ($job_set == $job_set_count) {$first_page.page_count mod $job_count} else {$job_count}
+                
+                # skip if no jobs
+                if ($current_job_count < 1) {return}
+
+                # spawn $current_job_count jobs
                 0..($current_job_count - 1)
                     | each {|offset|
-                        let page = $job_set * $job_count + $offset
+                        let page = $job_set * $job_count + $offset + 1 # add 1 because 1-indexed pages
                         job spawn {
-                            save-addons-from-page $page --prefetched (if $page == 1 {$first_page} else {null})
+                            save-addons-from-page $page --prefetched (if ($page == 1) {$first_page} else {null})
                         }
                     }
                 # wait for all jobs to be finished
@@ -117,8 +121,8 @@ def main [
         }
 
         def save-addons-from-page [page: int --prefetched: table] {
-            $prefetched 
-                | if ($in == null) {get-addons-page $page} else {$in}
+            $prefetched
+                | if ($in == null) {get-addons-page $page} else {$prefetched}
                 | get results
                 | each {get-addon $in.id --prefetched $in}
                 | each {to json --raw}
