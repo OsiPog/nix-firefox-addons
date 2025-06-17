@@ -15,7 +15,7 @@ A GitHub Action updates the list every day at 2:37am UTC.
 {
   inputs = {
     # ...
-    nix-firefox-addons.url = "github:oscar-schwarz/nix-firefox-addons";
+    nix-firefox-addons.url = "github:osipog/nix-firefox-addons";
   }
   # ...
 }
@@ -66,7 +66,7 @@ TODO
 To find the package name (slug) and the addon ID (guid) of the addon you want to add to your config, you can use the `search-addon` command of this flake. It takes one argument which is a search query of the addon you are looking for and it returns a list with 10 matching addons with name, slug and guid.
 
 ```
-nix run github:oscar-schwarz/nix-firefox-addons#search-addon ublock
+nix run github:osipog/nix-firefox-addons#search-addon ublock
 ```
 ![image](https://github.com/user-attachments/assets/006b2e45-c71f-47df-b55b-7d352cc818b5)
 
