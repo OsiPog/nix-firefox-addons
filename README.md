@@ -68,7 +68,8 @@ To find the package name (slug) and the addon ID (guid) of the addon you want to
 ```
 nix run github:osipog/nix-firefox-addons#search-addon ublock
 ```
-![image](https://github.com/user-attachments/assets/006b2e45-c71f-47df-b55b-7d352cc818b5)
+![image](https://github.com/user-attachments/assets/86b0fc26-3571-4f0d-9992-af3fc3cffca9)
+
 
 
 
