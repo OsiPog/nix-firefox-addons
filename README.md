@@ -101,3 +101,9 @@ nix run github:osipog/nix-firefox-addons#search-addon ublock
 - [rycee's NUR expressions](https://gitlab.com/rycee/nur-expressions) containing expressions for Firefox addons
 - [montchr's firefox-addons](https://github.com/seadome/firefox-addons) also containing Nix expressions for Firefox addons
 - [VSCode extensions Nix expressions by nix-community](https://github.com/nix-community/nix-vscode-extensions) as a rolemodel of scale
+
+## License
+
+All code in this repository is licensed under the GNU General Public License v3.0 (GPL-3.0), except for the `addons.yaml` file which contains addon metadata and is not subject to this license.
+
+For the full license text, see [LICENSE](LICENSE) or visit https://www.gnu.org/licenses/gpl-3.0.html.
