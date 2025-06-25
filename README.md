@@ -1,8 +1,8 @@
 # Nix Expressions For Firefox Addons
 
-This flake provides about **90,000** addons from https://addons.mozilla.org/ as Nix packages. (with more to come!)
+This flake provides over **100,000** addons from https://addons.mozilla.org/ as Nix packages. (with more being added every day)
 
-A GitHub Action updates the list every day at 2:37am UTC.
+A GitHub Action updates the list every day at 2:37am UTC. The fetcher script includes almost every addon that has as low as 1 daily user. If you happen to find an addon you'd like to have in this flake just download it once (getting its weekly downloads to 1) and it will be part of the next fetch.
 
 ## Declare Firefox Addons With [Home-Manager](https://github.com/nix-community/home-manager)
 
