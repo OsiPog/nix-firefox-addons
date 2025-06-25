@@ -21,20 +21,43 @@ A GitHub Action updates the list every day at 2:37am UTC.
 }
 ```
 
-(Make sure that `inputs` is exposed to your modules with `specialArgs`)
+2. Import the module into your Home Manager configuration
 
+In your flake's Home Manager configuration:
+```nix
+{
+  outputs = { self, nixpkgs, home-manager, nix-firefox-addons, ... }: {
+    homeConfigurations.your-username = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      modules = [
+        # your other modules...
+        nix-firefox-addons.nixosModules.default
+        ./home.nix
+      ];
+    };
+  };
+}
+```
 
-2. In your `home.nix` (or wherever you configured Firefox) add the desired addons (uBlock Origin as an example)
+Alternatively, you can also import it directly in your `home.nix` with:
+```nix
+{ inputs, ... }: {
+  imports = [ inputs.nix-firefox-addons.nixosModules.default ];
+  # rest of your configuration...
+}
+```
+
+3. In your `home.nix` (or wherever you configured Firefox) add the desired addons (uBlock Origin as an example)
 
 ```nix
-{ inputs, pkgs, ... }: {
+{ pkgs, ... }: {
   # ...
   programs.firefox = {
     enable = true;
     # ...
     profiles.default = {
       extensions = {
-        packages = with inputs.nix-firefox-addons.addons.${pkgs.system} [
+        packages = with pkgs.firefoxAddons [
           ublock-origin
         ];
         settings."uBlock0@raymondhill.net".settings = {
