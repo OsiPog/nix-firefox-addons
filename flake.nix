@@ -57,10 +57,11 @@
             config.allowUnfree = true;
           };
         in {
+          addons =
+            warn "Using the nix-firefox-addons.addons.\${system} is discouraged as unfree packages are enabled by default. Using the NixOS module (nix-firefox-addons.nixosModules.default) will enable an overlay that uses your nixpkgs instance with your nixpkgs configuration to build the addons."
+            (addonPackages pkgs);
+
           packages = {
-            addons =
-              warn "Using the nix-firefox-addons.packages.\${system}.addons is discouraged as unfree packages are enabled by default. Using the NixOS module (nix-firefox-addons.nixosModules.default) will enable an overlay that uses your nixpkgs instance with your nixpkgs configuration to build the addons."
-              (addonPackages pkgs);
             search-addon = pkgs.writeShellApplication {
               name = "search-addon";
               runtimeInputs = [pkgs.nushell];
