@@ -41,13 +41,16 @@
         }))
         listToAttrs
       ];
-  in
-    {
-      nixosModules.default = {...}: {
+
+    module = {...}: {
         nixpkgs.overlays = [(final: prev: {
           firefoxAddons = addonPackages final;
         })];
       };
+  in
+    {
+      nixosModules.default = module;
+      homeManagerModules.default = module; 
     }
     // (
       flake-utils.lib.eachDefaultSystem (

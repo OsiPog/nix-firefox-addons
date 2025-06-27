@@ -31,7 +31,7 @@ In your flake's Home Manager configuration:
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       modules = [
         # your other modules...
-        nix-firefox-addons.nixosModules.default
+        nix-firefox-addons.homeManagerModules.default
         ./home.nix
       ];
     };
@@ -42,10 +42,12 @@ In your flake's Home Manager configuration:
 Alternatively, you can also import it directly in your `home.nix` with:
 ```nix
 { inputs, ... }: {
-  imports = [ inputs.nix-firefox-addons.nixosModules.default ];
+  imports = [ inputs.nix-firefox-addons.homeManagerModules.default ];
   # rest of your configuration...
 }
 ```
+
+
 
 3. In your `home.nix` (or wherever you configured Firefox) add the desired addons (uBlock Origin as an example)
 
@@ -57,7 +59,7 @@ Alternatively, you can also import it directly in your `home.nix` with:
     # ...
     profiles.default = {
       extensions = {
-        packages = with pkgs.firefoxAddons [
+        packages = with pkgs.firefoxAddons; [
           ublock-origin
         ];
         settings."uBlock0@raymondhill.net".settings = {
@@ -77,6 +79,44 @@ Alternatively, you can also import it directly in your `home.nix` with:
       };
     }
   }
+}
+```
+
+### With NixOS Home Manager Integration
+
+If you're using Home Manager as a NixOS module (rather than standalone), you can also import `nixosModules.default` directly in your NixOS configuration:
+
+```nix
+{
+  inputs = {
+    # ...
+    nix-firefox-addons.url = "github:osipog/nix-firefox-addons";
+  };
+
+  outputs = { self, nixpkgs, home-manager, nix-firefox-addons, ... }: {
+    nixosConfigurations.your-hostname = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        home-manager.nixosModules.home-manager
+        nix-firefox-addons.nixosModules.default
+        {
+          home-manager.users.your-username = {
+            programs.firefox = {
+              enable = true;
+              profiles.default = {
+                extensions = {
+                  packages = with pkgs.firefoxAddons; [
+                    ublock-origin
+                  ];
+                };
+              };
+            };
+          };
+        }
+        # your other modules...
+      ];
+    };
+  };
 }
 ```
 
