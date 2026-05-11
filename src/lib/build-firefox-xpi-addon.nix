@@ -19,11 +19,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     inherit url;
-    sha256 = builtins.convertHash {
-      inherit hash;
-      toHashFormat = "sri";
-      hashAlgo = "sha256";
-    };
+    sha256 = hash;
   };
 
   preferLocalBuild = true;
