@@ -9,6 +9,7 @@
     ...
   }: let
     inherit (nixpkgs) lib;
+    systems = lib.systems.flakeExposed;
       
     inherit (builtins) listToAttrs fromJSON readFile;
     inherit (lib) pipe;
@@ -40,7 +41,7 @@
       };
     }
     // (
-      flake-utils.lib.eachDefaultSystem (
+      flake-utils.lib.eachSystem systems (
         system: let
           pkgs = import nixpkgs {
             inherit system;
